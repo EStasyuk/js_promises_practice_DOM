@@ -75,22 +75,23 @@ secondPromise
     document.addEventListener('click', handleLeftClick);
     });
 
-    const rightClickPromise = new Promise((resolve) => {
-    const handleRightClick = (event) => {
-        if (event.button === 2 || (event.button === 0 && event.ctrlKey)) {
-            resolve('Правий клік');
-            document.removeEventListener('contextmenu', handleRightClick);
-            document.removeEventListener('click', handleRightClick);
-        }
-    };
-    document.addEventListener('contextmenu', handleRightClick);
-    document.addEventListener('click', handleRightClick);
-    });
+const rightClickPromise = new Promise((resolve) => {
+  const handleRightClickContextMenu = (event) => {
 
-    const thirdPromise = Promise.all([leftClickPromise, rightClickPromise])
-    .then(() => {
-        return 'Third promise was resolved';
-    });
+    resolve('Правий клік');
+    document.removeEventListener('contextmenu', handleRightClickContextMenu);
+  };
+
+  const handleCtrlLeftClick = (event) => {
+    if (event.button === 0 && event.ctrlKey) {
+      resolve('Правий клік (Ctrl+лівий клік)');
+      document.removeEventListener('click', handleCtrlLeftClick);
+    }
+  };
+
+  document.addEventListener('contextmenu', handleRightClickContextMenu);
+  document.addEventListener('click', handleCtrlLeftClick);
+});
 
 thirdPromise
     .then((message) => {
