@@ -93,6 +93,11 @@ const rightClickPromise = new Promise((resolve) => {
   document.addEventListener('click', handleCtrlLeftClick);
 });
 
+const thirdPromise = Promise.all([leftClickPromise, rightClickPromise])
+  .then(() => {
+    return 'Third promise was resolved';
+  });
+
 thirdPromise
     .then((message) => {
         displayNotification(message, true);
